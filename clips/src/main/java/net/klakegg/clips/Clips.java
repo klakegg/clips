@@ -49,6 +49,7 @@ public class Clips {
 
     /**
      * Start services registered in the injector.
+     *
      * @throws Exception
      */
     public void startServices() throws Exception {

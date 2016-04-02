@@ -5,6 +5,8 @@ import com.google.inject.multibindings.Multibinder;
 import com.typesafe.config.Config;
 import net.klakegg.clips.api.ClipsModule;
 import net.klakegg.clips.utils.Classes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -12,6 +14,8 @@ import java.util.Collection;
  * Special module used to prepare modules for the injector we want to make.
  */
 class BootstrapModule extends AbstractModule {
+
+    private static Logger logger = LoggerFactory.getLogger(BootstrapModule.class);
 
     private Config config;
 
@@ -42,6 +46,9 @@ class BootstrapModule extends AbstractModule {
                 // Cast classes to Module as this is a requirement
                 .map(cls -> (Class<ClipsModule>) cls)
                 // Bind classes to the multibinder
-                .forEach(cls -> modules.addBinding().to(cls));
+                .forEach(cls -> {
+                    logger.info("Loading module '{}'.", cls.getName());
+                    modules.addBinding().to(cls);
+                });
     }
 }
