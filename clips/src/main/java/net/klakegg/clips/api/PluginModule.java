@@ -7,7 +7,7 @@ import com.google.inject.multibindings.Multibinder;
 /**
  * Helper class making available some handy methods.
  */
-public abstract class PluginModule extends AbstractModule implements ClipsModule {
+public abstract class PluginModule extends AbstractModule {
 
     protected void emptyMultibinder(Class<?> cls) {
         Multibinder.newSetBinder(binder(), cls);

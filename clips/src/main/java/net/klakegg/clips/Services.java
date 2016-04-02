@@ -7,18 +7,19 @@ import net.klakegg.commons.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-class ClipsServices {
+class Services {
 
-    private static Logger logger = LoggerFactory.getLogger(ClipsServices.class);
+    private static Logger logger = LoggerFactory.getLogger(Services.class);
 
     private List<Service> services;
 
     @Inject
-    public ClipsServices(Set<Service> services) {
+    public Services(Set<Service> services) {
         this.services = services.stream().sorted(Sortables.comparator()).collect(Collectors.toList());
     }
 
@@ -27,14 +28,10 @@ class ClipsServices {
             logger.info("Starting '{}'.", service.getClass().getName());
             service.start();
         }
-        logger.info("Started.");
+        logger.info("Ready");
     }
 
     public void stop() {
-        for (Service service : Lists.reverse(services)) {
-            logger.info("Stopping '{}'.", service.getClass().getName());
-            service.stop();
-        }
-        logger.info("Stopped.");
+        Lists.reverse(services).stream().forEach(Service::stop);
     }
 }

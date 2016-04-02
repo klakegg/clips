@@ -7,7 +7,7 @@ import com.google.inject.servlet.ServletModule;
 /**
  * Helper class making available some handy methods.
  */
-public abstract class WebPluginModule extends ServletModule implements ClipsModule {
+public abstract class WebPluginModule extends ServletModule {
 
     protected void emptyMultibinder(Class<?> cls) {
         Multibinder.newSetBinder(binder(), cls);
