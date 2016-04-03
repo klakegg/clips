@@ -5,13 +5,12 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import net.klakegg.clips.lang.ServiceException;
 import net.klakegg.clips.module.ConfigModule;
 import net.klakegg.clips.utils.Classes;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,11 +21,9 @@ public class Clips {
 
     private Config config;
     private Injector injector;
-
-    private Services services;
+    private Optional<Services> services = Optional.empty();
 
     /**
-     *
      * @param metaModules Other modules adding for the meta injector.
      */
     public Clips(Module... metaModules) {
@@ -52,15 +49,15 @@ public class Clips {
      * @param otherModules Other modules adding for the meta injector.
      */
     private void loadInjector(Module... otherModules) {
-        List<Module> metaModules = new ArrayList<>();
-        metaModules.addAll(Stream.of(otherModules).collect(Collectors.toList()));
+        // Gather all modules for meta injector
+        List<Module> metaModules = Stream.of(otherModules).collect(Collectors.toList());
         metaModules.add(new ConfigModule(config));
 
         // Create meta injector used to initiate project modules
         Injector metaInjector = Guice.createInjector(metaModules);
 
-        // Get all modules
-        List<Module> modules = config.getObject("clips.modules").keySet().stream()
+        // Initiate modules and initiate injector
+        injector = Guice.createInjector(config.getObject("clips.modules").keySet().stream()
                 // Remove modules turned off in configuration
                 .filter(module -> "base".equals(module) || !config.hasPath("clips.plugin." + module) || config.getBoolean("clips.plugin." + module))
                 // Fetch classes part of modules
@@ -72,32 +69,26 @@ public class Clips {
                 // Initiate module using meta injector
                 .map(cls -> (Module) metaInjector.getInstance(cls))
                 // Collect modules
-                .collect(Collectors.toList());
-
-        // Create injector using the modules as defined
-        injector = Guice.createInjector(modules);
-
-        // Call GC.
-        System.gc();
+                .collect(Collectors.toList()));
     }
 
+    /**
+     * Returns the Injector for use other places.
+     *
+     * @return Current injector.
+     */
+    @SuppressWarnings("unused")
     public Injector getInjector() {
         return injector;
     }
 
     /**
      * Start services registered in the injector.
-     *
-     * @throws Exception
      */
-    public void startServices() throws Exception {
-        try {
-            if (services == null) {
-                services = injector.getInstance(Services.class);
-                services.start();
-            }
-        } catch (Exception e) {
-            throw new ServiceException("Unable to load services.", e);
+    public void startServices() {
+        if (!services.isPresent()) {
+            services = Optional.of(injector.getInstance(Services.class));
+            services.ifPresent(Services::start);
         }
     }
 
@@ -105,9 +96,7 @@ public class Clips {
      * Stop services registered in the injector.
      */
     public void stopServices() {
-        if (services != null) {
-            services.stop();
-            services = null;
-        }
+        services.ifPresent(Services::stop);
+        services = Optional.empty();
     }
 }

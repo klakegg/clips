@@ -7,7 +7,6 @@ import net.klakegg.commons.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,15 +22,16 @@ class Services {
         this.services = services.stream().sorted(Sortables.comparator()).collect(Collectors.toList());
     }
 
-    public void start() throws Exception {
-        for (Service service : services) {
-            logger.info("Starting '{}'.", service.getClass().getName());
-            service.start();
-        }
+    public void start() {
+        services.stream()
+                .peek(s -> logger.info("Starting '{}'.", s.getClass().getName()))
+                .forEach(Service::start);
         logger.info("Ready");
     }
 
     public void stop() {
-        Lists.reverse(services).stream().forEach(Service::stop);
+        Lists.reverse(services).stream()
+                .peek(s -> logger.info("Stopping '{}'.", s.getClass().getName()))
+                .forEach(Service::stop);
     }
 }
