@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 import com.typesafe.config.Config;
 import net.klakegg.clips.api.PluginModule;
 import net.klakegg.clips.api.Service;
-import net.klakegg.clips.utils.Classes;
-import org.glassfish.grizzly.Grizzly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

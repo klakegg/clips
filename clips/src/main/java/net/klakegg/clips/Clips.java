@@ -39,14 +39,14 @@ public class Clips {
         config = ConfigFactory.load();
 
         // Override configuration if basename is defined in configuration.
-        if (config.hasPath("clips.config"))
-            config = ConfigFactory.load(config.getString("clips.config"));
+        if (config.hasPath("clips.config.basename"))
+            config = ConfigFactory.load(config.getString("clips.config.basename"));
     }
 
     /**
      * Loading the injector.
      *
-     * @param otherModules Other modules adding for the meta injector.
+     * @param otherModules Other modules added for the meta injector.
      */
     private void loadInjector(Module... otherModules) {
         // Gather all modules for meta injector
@@ -57,11 +57,11 @@ public class Clips {
         Injector metaInjector = Guice.createInjector(metaModules);
 
         // Initiate modules and initiate injector
-        injector = Guice.createInjector(config.getObject("clips.modules").keySet().stream()
+        injector = Guice.createInjector(config.getObject("clips").keySet().stream()
                 // Remove modules turned off in configuration
-                .filter(module -> "base".equals(module) || !config.hasPath("clips.plugin." + module) || config.getBoolean("clips.plugin." + module))
+                .filter(plugin -> "core".equals(plugin) || !config.hasPath("clips." + plugin + ".enabled") || config.getBoolean("clips." + plugin + ".enabled"))
                 // Fetch classes part of modules
-                .map(module -> config.getStringList("clips.modules." + module))
+                .map(plugin -> config.getStringList("clips." + plugin + ".class"))
                 // Make it into a stream of strings
                 .flatMap(Collection::stream)
                 // Get the classes identified by class names

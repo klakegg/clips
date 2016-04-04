@@ -19,7 +19,9 @@ class Services {
 
     @Inject
     public Services(Set<Service> services) {
-        this.services = services.stream().sorted(Sortables.comparator()).collect(Collectors.toList());
+        this.services = services.stream()
+                .sorted(Sortables.comparator())
+                .collect(Collectors.toList());
     }
 
     public void start() {
