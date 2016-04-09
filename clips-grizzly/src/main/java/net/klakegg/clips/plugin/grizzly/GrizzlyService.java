@@ -1,8 +1,7 @@
 package net.klakegg.clips.plugin.grizzly;
 
-import com.google.inject.Inject;
 import com.google.inject.servlet.GuiceFilter;
-import com.typesafe.config.Config;
+import net.klakegg.clips.annotation.Configuration;
 import net.klakegg.clips.api.Service;
 import net.klakegg.clips.lang.ServiceException;
 import net.klakegg.commons.sortable.Sort;
@@ -18,19 +17,17 @@ import java.io.IOException;
 import java.util.EnumSet;
 
 @Sort(1000)
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class GrizzlyService implements Service {
 
     private static Logger logger = LoggerFactory.getLogger(GrizzlyService.class);
 
     private HttpServer httpServer;
 
-    private Config config;
-
-    @Inject
-    public GrizzlyService(Config config) {
-        this.config = config;
-    }
+    @Configuration("grizzly.name")
+    private String name = "GuiceContext";
+    @Configuration("grizzly.port")
+    private int port = 9000;
 
     public void start() {
         if (!SLF4JBridgeHandler.isInstalled()) {
@@ -38,11 +35,11 @@ public class GrizzlyService implements Service {
             SLF4JBridgeHandler.install();
         }
 
-        WebappContext webappContext = new WebappContext(config.hasPath("grizzly.name") ? config.getString("grizzly.name") : "GuiceContext");
+        WebappContext webappContext = new WebappContext(name);
         FilterRegistration filterRegistration = webappContext.addFilter("GuiceFilter", GuiceFilter.class);
         filterRegistration.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), "/*");
 
-        httpServer = HttpServer.createSimpleServer(".", config.hasPath("grizzly.port") ? config.getInt("grizzly.port") : 9000);
+        httpServer = HttpServer.createSimpleServer(".", port);
         webappContext.deploy(httpServer);
 
         try {

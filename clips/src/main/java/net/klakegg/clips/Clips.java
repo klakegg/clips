@@ -7,8 +7,10 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
 import net.klakegg.clips.utils.Classes;
+import net.klakegg.clips.utils.ConfigHelper;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,8 +51,20 @@ public class Clips {
      * @param otherModules Other modules added for the meta injector.
      */
     private void loadInjector(Module... otherModules) {
+        // Create a ConfigHelper.
+        ConfigHelper configHelper = new ConfigHelper(config);
+
         // Gather all modules for meta injector
-        List<Module> metaModules = Stream.of(otherModules).collect(Collectors.toList());
+        List<Module> metaModules = configHelper.getStringList("clips.pre.class").orElse(Collections.emptyList()).stream()
+                // Get the classes identified by class names
+                .map(Classes::get)
+                // Initiate module without context
+                .map(c -> (Module) Classes.instance(c))
+                // Collect modules
+                .collect(Collectors.toList());
+        // Add modules provided by constructor.
+        metaModules.addAll(Stream.of(otherModules).collect(Collectors.toList()));
+        // Add ConfigModule.
         metaModules.add(new ConfigModule(config));
 
         // Create meta injector used to initiate project modules
@@ -58,10 +72,12 @@ public class Clips {
 
         // Initiate modules and initiate injector
         injector = Guice.createInjector(config.getObject("clips").keySet().stream()
+                // Remove plugin "pre".
+                .filter(plugin -> !"pre".equals(plugin))
                 // Remove modules turned off in configuration
-                .filter(plugin -> "core".equals(plugin) || !config.hasPath("clips." + plugin + ".enabled") || config.getBoolean("clips." + plugin + ".enabled"))
+                .filter(plugin -> "core".equals(plugin) || configHelper.getBoolean("clips." + plugin + ".enabled").orElse(true))
                 // Fetch classes part of modules
-                .map(plugin -> config.getStringList("clips." + plugin + ".class"))
+                .map(plugin -> configHelper.getStringList("clips." + plugin + ".class").orElse(Collections.emptyList()))
                 // Make it into a stream of strings
                 .flatMap(Collection::stream)
                 // Get the classes identified by class names

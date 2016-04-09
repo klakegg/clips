@@ -27,4 +27,12 @@ public class Classes {
             return fallback;
         }
     }
+
+    public static <T> T instance(Class<T> cls) {
+        try {
+            return cls.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new ClassException(String.format("Unable to create instance of '%s'.", cls), e);
+        }
+    }
 }
