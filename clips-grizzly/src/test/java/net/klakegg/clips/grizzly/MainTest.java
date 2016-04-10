@@ -1,4 +1,4 @@
-package net.klakegg.clips.plugin.grizzly;
+package net.klakegg.clips.grizzly;
 
 import net.klakegg.clips.Main;
 import org.testng.annotations.Test;

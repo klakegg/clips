@@ -1,4 +1,4 @@
-package net.klakegg.clips.plugin.grizzly;
+package net.klakegg.clips.grizzly;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

@@ -8,6 +8,8 @@ import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
 import net.klakegg.clips.utils.Classes;
 import net.klakegg.clips.utils.ConfigHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +22,8 @@ import java.util.stream.Stream;
  * Main object loading and handling modules and services.
  */
 public class Clips {
+
+    private static Logger logger = LoggerFactory.getLogger(Clips.class);
 
     private Config config;
     private Injector injector;
@@ -80,6 +84,8 @@ public class Clips {
                 .map(plugin -> configHelper.getStringList("clips." + plugin + ".class").orElse(Collections.emptyList()))
                 // Make it into a stream of strings
                 .flatMap(Collection::stream)
+                // Logging for debug
+                .peek(c -> logger.debug("Module '{}'", c))
                 // Get the classes identified by class names
                 .map(Classes::get)
                 // Initiate module using meta injector

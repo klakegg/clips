@@ -9,9 +9,13 @@
     <packaging>pom</packaging>
     <version>0.8.0-SNAPSHOT</version>
 
+    <name>Clips :: Parent</name>
+
     <modules>
         <module>clips</module>
         <module>clips-grizzly</module>
+        <module>clips-config</module>
+        <module>clips-servlet</module>
     </modules>
 
     <properties>
@@ -37,6 +41,11 @@
             <dependency>
                 <groupId>net.klakegg.clips</groupId>
                 <artifactId>clips</artifactId>
+                <version>0.8.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>net.klakegg.clips</groupId>
+                <artifactId>clips-config</artifactId>
                 <version>0.8.0-SNAPSHOT</version>
             </dependency>
 

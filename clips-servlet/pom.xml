@@ -9,9 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>clips</artifactId>
-
-    <name>Clips</name>
+    <artifactId>clips-servlet</artifactId>
 
     <dependencies>
         <!-- Logging -->
@@ -19,37 +17,27 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Configuration -->
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-        </dependency>
 
         <!-- Guice -->
         <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-multibindings</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-servlet</artifactId>
+        </dependency>
+
+        <!-- Servlet API -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
-        <!-- Klakegg Commons -->
+        <!-- Gson -->
         <dependency>
-            <groupId>com.github.klakegg</groupId>
-            <artifactId>sortable</artifactId>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

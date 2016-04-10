@@ -11,6 +11,8 @@
 
     <artifactId>clips-grizzly</artifactId>
 
+    <name>Clips :: Grizzly</name>
+
     <properties>
         <grizzly.version>2.3.24</grizzly.version>
     </properties>
@@ -20,6 +22,10 @@
         <dependency>
             <groupId>net.klakegg.clips</groupId>
             <artifactId>clips</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.klakegg.clips</groupId>
+            <artifactId>clips-config</artifactId>
         </dependency>
 
         <!-- Guice -->
