@@ -5,8 +5,11 @@ import com.google.inject.servlet.ServletModule;
 
 public class ClipsServletModule extends ServletModule {
 
-    protected void serve(String path, Class<? extends ClipsServlet> cls) {
+    protected void serve(Class<? extends ClipsServlet> cls) {
+        String path = cls.getAnnotation(Path.class).value();
+
         bind(cls).in(Singleton.class);
-        serve(path, path + "/*").with(cls);
+        serveRegex(path, path + "/*").with(cls);
+
     }
 }

@@ -2,8 +2,6 @@ package net.klakegg.clips.servlet;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,16 +21,19 @@ public abstract class ClipsServlet extends HttpServlet {
     protected static final String PUT = "PUT";
     protected static final String TRACE = "TRACE";
 
-    private static Logger logger = LoggerFactory.getLogger(ClipsServlet.class);
+    protected static final String ROOT = "";
+
+    protected static final PathBuilder path = new PathBuilder();
 
     private Map<String, List<HandlerWrapper>> handlers = new HashMap<>();
     private String contextPath;
 
     @Inject
+    @SuppressWarnings("all")
     private Injector injector;
 
-    public ClipsServlet(String contextPath) {
-        this.contextPath = contextPath;
+    public ClipsServlet() {
+        this.contextPath = getClass().getAnnotation(Path.class).value();
 
         configure();
     }
@@ -59,7 +60,6 @@ public abstract class ClipsServlet extends HttpServlet {
 
     protected void perform(String method, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String uri = URLDecoder.decode(req.getRequestURI(), "UTF-8").replaceAll("/$", "");
-        logger.info(uri);
 
         Optional<Request> request = handlers.get(method).stream()
                 .map(w -> w.detect(uri, req, resp))
@@ -69,7 +69,7 @@ public abstract class ClipsServlet extends HttpServlet {
         if (request.isPresent())
             request.get().handle();
         else
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Page not found.");
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Not Found");
     }
 
     protected abstract void configure();
@@ -78,16 +78,32 @@ public abstract class ClipsServlet extends HttpServlet {
         append(method, regex, handler);
     }
 
+    protected void register(String method, PathBuilder builder, Handler handler) {
+        append(method, builder.toString(), handler);
+    }
+
     protected void register(String method, String regex, Class<? extends Handler> handler) {
         append(method, regex, injector.getInstance(handler));
+    }
+
+    protected void register(String method, PathBuilder builder, Class<? extends Handler> handler) {
+        append(method, builder.toString(), injector.getInstance(handler));
     }
 
     protected void registerJson(String method, String regex, JsonHandler handler) {
         append(method, regex, handler);
     }
 
+    protected void registerJson(String method, PathBuilder builder, JsonHandler handler) {
+        append(method, builder.toString(), handler);
+    }
+
     protected void registerGeneric(String method, String regex, GenericHandler handler) {
         append(method, regex, handler);
+    }
+
+    protected void registerGeneric(String method, PathBuilder builder, GenericHandler handler) {
+        append(method, builder.toString(), handler);
     }
 
     protected void append(String method, String regex, Handler handler) {
