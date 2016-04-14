@@ -8,6 +8,7 @@ import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
 import net.klakegg.clips.utils.Classes;
 import net.klakegg.clips.utils.ConfigHelper;
+import net.klakegg.commons.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,12 +85,14 @@ public class Clips {
                 .map(plugin -> configHelper.getStringList("clips." + plugin + ".class").orElse(Collections.emptyList()))
                 // Make it into a stream of strings
                 .flatMap(Collection::stream)
-                // Logging for debug
-                .peek(c -> logger.debug("Module '{}'", c))
                 // Get the classes identified by class names
                 .map(Classes::get)
                 // Initiate module using meta injector
                 .map(cls -> (Module) metaInjector.getInstance(cls))
+                // Sort modules
+                .sorted(Sortables.comparator())
+                // Logging for debug
+                .peek(m -> logger.debug("Module '{}'", m.getClass()))
                 // Collect modules
                 .collect(Collectors.toList()));
     }
@@ -111,6 +114,7 @@ public class Clips {
         if (!services.isPresent()) {
             services = Optional.of(injector.getInstance(Services.class));
             services.ifPresent(Services::start);
+            logger.info("Ready");
         }
     }
 

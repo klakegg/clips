@@ -28,7 +28,6 @@ class Services {
         services.stream()
                 .peek(s -> logger.info("Starting '{}'.", s.getClass().getName()))
                 .forEach(Service::start);
-        logger.info("Ready");
     }
 
     public void stop() {

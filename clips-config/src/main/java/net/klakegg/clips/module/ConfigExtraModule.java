@@ -10,12 +10,14 @@ import com.google.inject.spi.TypeListener;
 import com.typesafe.config.Config;
 import net.klakegg.clips.annotation.Configuration;
 import net.klakegg.clips.utils.ConfigHelper;
+import net.klakegg.commons.sortable.Sort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
+@Sort(-4995)
 public class ConfigExtraModule extends AbstractModule {
 
     private static Logger logger = LoggerFactory.getLogger(ConfigExtraModule.class);

@@ -11,6 +11,8 @@
 
     <artifactId>clips-servlet</artifactId>
 
+    <name>Clips :: Servlet</name>
+
     <dependencies>
         <!-- Logging -->
         <dependency>
