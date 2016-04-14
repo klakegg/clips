@@ -1,4 +1,4 @@
-package net.klakegg.clips.utils;
+package net.klakegg.clips.util;
 
 import com.google.inject.Inject;
 import com.typesafe.config.Config;

@@ -14,9 +14,28 @@
     <name>Clips :: Config</name>
 
     <dependencies>
+        <!-- Logging -->
         <dependency>
-            <groupId>net.klakegg.clips</groupId>
-            <artifactId>clips</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Guice -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+
+        <!-- Configuration -->
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+        </dependency>
+
+        <!-- Sortable -->
+        <dependency>
+            <groupId>com.github.klakegg</groupId>
+            <artifactId>sortable</artifactId>
         </dependency>
     </dependencies>
 

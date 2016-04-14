@@ -3,7 +3,7 @@ package net.klakegg.clips;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import net.klakegg.clips.api.Service;
-import net.klakegg.commons.sortable.Sortables;
+import net.klakegg.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

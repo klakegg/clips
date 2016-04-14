@@ -7,8 +7,8 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
 import net.klakegg.clips.utils.Classes;
-import net.klakegg.clips.utils.ConfigHelper;
-import net.klakegg.commons.sortable.Sortables;
+import net.klakegg.clips.util.ConfigHelper;
+import net.klakegg.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class Clips {
     private Optional<Services> services = Optional.empty();
 
     /**
-     * @param metaModules Other modules adding for the meta injector.
+     * @param metaModules Other modules added for the meta injector.
      */
     public Clips(Module... metaModules) {
         loadConfig();
@@ -65,6 +65,8 @@ public class Clips {
                 .map(Classes::get)
                 // Initiate module without context
                 .map(c -> (Module) Classes.instance(c))
+                // Sort modules
+                .sorted(Sortables.comparator())
                 // Collect modules
                 .collect(Collectors.toList());
         // Add modules provided by constructor.

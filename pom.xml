@@ -9,13 +9,14 @@
     <packaging>pom</packaging>
     <version>0.6.0-SNAPSHOT</version>
 
-    <name>Clips :: Parent</name>
+    <name>Clips</name>
 
     <modules>
-        <module>clips</module>
-        <module>clips-grizzly</module>
+        <module>clips-build</module>
         <module>clips-config</module>
+        <module>clips-grizzly</module>
         <module>clips-servlet</module>
+        <module>clips-api</module>
     </modules>
 
     <properties>
@@ -40,7 +41,12 @@
             <!-- Clips -->
             <dependency>
                 <groupId>net.klakegg.clips</groupId>
-                <artifactId>clips</artifactId>
+                <artifactId>clips-api</artifactId>
+                <version>0.6.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>net.klakegg.clips</groupId>
+                <artifactId>clips-build</artifactId>
                 <version>0.6.0-SNAPSHOT</version>
             </dependency>
             <dependency>
@@ -98,11 +104,26 @@
                 <version>${guice.version}</version>
             </dependency>
 
-            <!-- Klakegg Commons -->
+            <!-- Gson -->
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.6.2</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <!-- Servlet API -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!-- Sortable -->
             <dependency>
                 <groupId>com.github.klakegg</groupId>
                 <artifactId>sortable</artifactId>
-                <version>0160375649</version>
+                <version>534d9ebe8b</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -9,11 +9,21 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>clips</artifactId>
+    <artifactId>clips-build</artifactId>
 
-    <name>Clips</name>
+    <name>Clips :: Build</name>
 
     <dependencies>
+        <!-- Clips -->
+        <dependency>
+            <groupId>net.klakegg.clips</groupId>
+            <artifactId>clips-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.klakegg.clips</groupId>
+            <artifactId>clips-config</artifactId>
+        </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -23,12 +33,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <!-- Configuration -->
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
         </dependency>
 
         <!-- Guice -->
@@ -46,7 +50,7 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Klakegg Commons -->
+        <!-- Sortable -->
         <dependency>
             <groupId>com.github.klakegg</groupId>
             <artifactId>sortable</artifactId>

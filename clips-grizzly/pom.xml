@@ -21,11 +21,7 @@
         <!-- Clips -->
         <dependency>
             <groupId>net.klakegg.clips</groupId>
-            <artifactId>clips</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.klakegg.clips</groupId>
-            <artifactId>clips-config</artifactId>
+            <artifactId>clips-build</artifactId>
         </dependency>
 
         <!-- Guice -->
@@ -61,7 +57,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
         </dependency>
 
     </dependencies>

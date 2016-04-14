@@ -4,7 +4,7 @@ import com.google.inject.servlet.GuiceFilter;
 import net.klakegg.clips.annotation.Configuration;
 import net.klakegg.clips.api.Service;
 import net.klakegg.clips.lang.ServiceException;
-import net.klakegg.commons.sortable.Sort;
+import net.klakegg.sortable.Sort;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.FilterRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
