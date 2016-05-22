@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>clips-build</artifactId>
+    <artifactId>clips-boot</artifactId>
 
-    <name>Clips :: Build</name>
+    <name>Clips :: Boot</name>
 
     <dependencies>
         <!-- Clips -->

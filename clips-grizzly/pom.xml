@@ -14,14 +14,14 @@
     <name>Clips :: Grizzly</name>
 
     <properties>
-        <grizzly.version>2.3.24</grizzly.version>
+        <grizzly.version>2.3.25</grizzly.version>
     </properties>
 
     <dependencies>
         <!-- Clips -->
         <dependency>
             <groupId>net.klakegg.clips</groupId>
-            <artifactId>clips-build</artifactId>
+            <artifactId>clips-boot</artifactId>
         </dependency>
 
         <!-- Guice -->
