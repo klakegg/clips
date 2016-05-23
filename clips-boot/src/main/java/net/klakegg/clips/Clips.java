@@ -6,8 +6,8 @@ import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
-import net.klakegg.clips.util.ConfigHelper;
-import net.klakegg.clips.utils.Classes;
+import net.klakegg.helpers.ClassHelper;
+import net.klakegg.helpers.ConfigHelper;
 import net.klakegg.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,15 +64,10 @@ public class Clips {
      * @param otherModules Other modules added for the meta injector.
      */
     private void loadInjector(Config config, Module... otherModules) {
-        // Create a ConfigHelper.
-        ConfigHelper configHelper = new ConfigHelper(config);
-
         // Gather all modules for meta injector
-        List<Module> metaModules = configHelper.getStringList("clips.pre.class").orElse(Collections.emptyList()).stream()
-                // Get the classes identified by class names
-                .map(Classes::get)
+        List<Module> metaModules = ConfigHelper.cl(config, "clips.pre.class", Collections.emptyList()).stream()
                 // Initiate module without context
-                .map(c -> (Module) Classes.instance(c))
+                .map(c -> (Module) ClassHelper.instance(c))
                 // Sort modules
                 .sorted(Sortables.comparator())
                 // Collect modules
@@ -90,13 +85,11 @@ public class Clips {
                 // Remove plugin "pre".
                 .filter(plugin -> !"pre".equals(plugin))
                 // Remove modules turned off in configuration
-                .filter(plugin -> "core".equals(plugin) || configHelper.getBoolean("clips." + plugin + ".enabled").orElse(true))
+                .filter(plugin -> "core".equals(plugin) || ConfigHelper.b(config, "clips." + plugin + ".enabled", true))
                 // Fetch classes part of modules
-                .map(plugin -> configHelper.getStringList("clips." + plugin + ".class").orElse(Collections.emptyList()))
+                .map(plugin -> ConfigHelper.cl(config, "clips." + plugin + ".class", Collections.emptyList()))
                 // Make it into a stream of strings
                 .flatMap(Collection::stream)
-                // Get the classes identified by class names
-                .map(Classes::get)
                 // Initiate module using meta injector
                 .map(cls -> (Module) metaInjector.getInstance(cls))
                 // Sort modules

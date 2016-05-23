@@ -55,6 +55,12 @@
             <groupId>com.github.klakegg</groupId>
             <artifactId>sortable</artifactId>
         </dependency>
+
+        <!-- Helpers -->
+        <dependency>
+            <groupId>com.github.klakegg</groupId>
+            <artifactId>helpers</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

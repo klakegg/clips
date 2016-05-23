@@ -125,6 +125,13 @@
                 <artifactId>sortable</artifactId>
                 <version>5cbd7e0bfa</version>
             </dependency>
+
+            <!-- Helpers -->
+            <dependency>
+                <groupId>com.github.klakegg</groupId>
+                <artifactId>helpers</artifactId>
+                <version>a38ace1855</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

@@ -9,7 +9,6 @@ import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import com.typesafe.config.Config;
 import net.klakegg.clips.annotation.Configuration;
-import net.klakegg.clips.util.ConfigHelper;
 import net.klakegg.sortable.Sort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +30,6 @@ public class ConfigExtraModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        // Bind ConfigHelper
-        bind(ConfigHelper.class);
-
         // Enable injection of configurations
         bindListener(Matchers.any(), new TypeListener() {
             @Override
