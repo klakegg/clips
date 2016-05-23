@@ -6,8 +6,8 @@ import com.google.inject.Module;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import net.klakegg.clips.module.ConfigModule;
-import net.klakegg.clips.utils.Classes;
 import net.klakegg.clips.util.ConfigHelper;
+import net.klakegg.clips.utils.Classes;
 import net.klakegg.sortable.Sortables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,6 @@ public class Clips {
 
     private static Logger logger = LoggerFactory.getLogger(Clips.class);
 
-    private Config config;
     private Injector injector;
     private Optional<Services> services = Optional.empty();
 
@@ -34,20 +33,29 @@ public class Clips {
      * @param metaModules Other modules added for the meta injector.
      */
     public Clips(Module... metaModules) {
-        loadConfig();
-        loadInjector(metaModules);
+        loadInjector(loadConfig(), metaModules);
+    }
+
+    /**
+     * @param config Configuration to override automatic loaded configuration.
+     * @param metaModules Other modules added for the meta injector.
+     */
+    public Clips(Config config, Module... metaModules) {
+        loadInjector(config, metaModules);
     }
 
     /**
      * Loading configuration.
      */
-    private void loadConfig() {
+    private Config loadConfig() {
         // Load configuration using defaults
-        config = ConfigFactory.load();
+        Config config = ConfigFactory.load();
 
         // Override configuration if basename is defined in configuration.
         if (config.hasPath("clips.config.basename"))
             config = ConfigFactory.load(config.getString("clips.config.basename"));
+
+        return config;
     }
 
     /**
@@ -55,7 +63,7 @@ public class Clips {
      *
      * @param otherModules Other modules added for the meta injector.
      */
-    private void loadInjector(Module... otherModules) {
+    private void loadInjector(Config config, Module... otherModules) {
         // Create a ConfigHelper.
         ConfigHelper configHelper = new ConfigHelper(config);
 
@@ -107,6 +115,14 @@ public class Clips {
     @SuppressWarnings("unused")
     public Injector getInjector() {
         return injector;
+    }
+
+    /**
+     * Returns an instance of the requested class type from injector.
+     */
+    @SuppressWarnings("unused")
+    public <T> T getInstance(Class<T> cls) {
+        return injector.getInstance(cls);
     }
 
     /**
